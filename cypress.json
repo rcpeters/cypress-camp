@@ -1,0 +1,7 @@
+{
+    "env": {
+        "email": "broken_email",
+        "password": "broken_password",
+        "campsiteId": "232449"
+    }
+}
