@@ -1,12 +1,12 @@
 /// <reference types="cypress" />
 import { visitCampsiteList, checkCampsite } from './helpers/campsite-helpers'
-import { establishLoggedIn, populateDates } from './helpers/recreation-gov-helpers'
+import { establishLoggedIn, populateDates, continueShopping } from './helpers/recreation-gov-helpers'
 
 const campsiteId = Cypress.env('campsiteId');
 const campsitesStr = Cypress.env('campsites');
 var campsites = campsitesStr.split(':')
 const numToBook = Cypress.env('numToBook');
-const numBooked = 0;
+var numBooked = 0;
 const email = Cypress.env('email');
 const password = Cypress.env('password');
 const startDate = Cypress.env('startDate');
@@ -17,37 +17,50 @@ const campsiteUrl = `https://www.recreation.gov/camping/campgrounds/${campsiteId
 
 
 const keepPolling = () => {
-    return campsites.length > 0 || numBooked >= numToBook
+    return campsites.length > 0 && numBooked < numToBook
+}
+
+const postAddSiteFn = (siteNum) => {
+    numBooked += 1;
+    campsites = campsites.filter(site => site != siteNum);
+    cy.log(`Site ${siteNum} added`);
+    cy.log(campsites);
+    if (keepPolling()) {
+        continueShopping();
+        populateDates(startDate, endDate);
+        visitCampsiteList(campsiteUrl);
+    }
 }
 
 // TODO: make this easier to read
 const pollCampsites = () => {
-    if (keepPolling)
-        cy.wrap(campsites).each((num, i, array) => {
+    cy.wrap(campsites).each((num, i, array) => {
+        if (keepPolling()) {
             return new Cypress.Promise((resolve) => {
                 setTimeout(() => {
-                    if (keepPolling) {
-                        checkCampsite(num)
-                        if (i >= array.length - 1)
-                            if (checks < maxChecks) {
-                                checks += 1;
-                                cy.reload().then($object => {
-                                    pollCampsites();
-                                })
-                            } else {
-                                cy.log("maxChecks reached")
-                            }
-                    }
+                    checkCampsite(num, postAddSiteFn)
+                    if (i >= array.length - 1)
+                        if (checks < maxChecks) {
+                            checks += 1;
+                            cy.reload().then($object => {
+                                pollCampsites();
+                            })
+                        } else {
+                            cy.log("maxChecks reached")
+                        }
                     resolve()
                 }, 0)
             })
-        })
+        } else {
+            return false; // return false stops the each iteration
+        }
+    })
 }
 
 
 it('loading recreation.gov campsite', () => {
     populateDates(startDate, endDate);
-    visitCampsiteList(campsiteUrl);
+    visitCampsiteList(campsiteUrl, true);
     establishLoggedIn(email, password);
     pollCampsites();
 })
