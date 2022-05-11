@@ -2,7 +2,12 @@
 
 **This project is for my personal use.** You are free to fork it but it will not be maintained outside of my personal needs (or you decide to hire me). I would describe many things such as environment variables parsing as brittle.
 
-This was created to help book campsites on the day they are released. It will monitor the campsites and add them to cart. From there you must complete the process. [Cypress](https://www.npmjs.com/package/cypress) browser is used for the automation.
+This was created to help book campsites on the day they are released. It will monitor the campsites and add them to cart. From there you must complete the process. The [Cypress](https://www.npmjs.com/package/cypress) browser testing framework is used for the automation.
+
+## Setup
+
+1. Clone the repo
+2. `npm install`
 
 ## Example recreation.gov campsite booking
 
