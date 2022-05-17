@@ -11,6 +11,14 @@ This was created to help book campsites on the day they are released. It will mo
 
 ## Example recreation.gov campsite booking
 
+North Pines Yosemite
+
 ```
- ./node_modules/.bin/cypress run --headed --browser chrome --spec cypress/integration/campsite-grabber.js --no-exit --env="email=broken_email,password=broken_password,numToBook=4,campsiteId=10067346,campsites=1:2:3,startDate=07/10/2022,endDate=07/12/2022"
+ ./node_modules/.bin/cypress run --headed --browser chrome --spec cypress/integration/campsite-grabber.js --no-exit --env="email=broken_email,password=broken_password,numToBook=4,campsiteId=10067346,campsites=1:2:3,startDate=07/10/2022,endDate=07/12/2022,bookingOpens=2022-05-17T14:40:00"
+```
+
+Kirby Cove
+
+```
+ ./node_modules/.bin/cypress run --headed --browser chrome --spec cypress/integration/campsite-grabber.js --no-exit --env="email=broken_email,password=broken_password,numToBook=2,campsiteId=232491,campsites=1:3:4,startDate=08/25/2022,endDate=08/28/2022,bookingOpens=2022-05-17T14:40:00"
 ```

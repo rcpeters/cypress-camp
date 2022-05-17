@@ -11,9 +11,12 @@ const email = Cypress.env('email');
 const password = Cypress.env('password');
 const startDate = Cypress.env('startDate');
 const endDate = Cypress.env('endDate');
-const maxChecks = 4;
+const maxChecks = 2000;
 var checks = 0;
 const campsiteUrl = `https://www.recreation.gov/camping/campgrounds/${campsiteId}?tab=campsites`
+
+const bookingOpens = Date.parse(Cypress.env('bookingOpens'));
+
 
 
 const keepPolling = () => {
@@ -35,7 +38,7 @@ const postAddSiteFn = (siteNum) => {
 // TODO: make this easier to read
 const pollCampsites = () => {
     cy.wrap(campsites).each((num, i, array) => {
-        if (keepPolling()) {
+        if (keepPolling())
             return new Cypress.Promise((resolve) => {
                 setTimeout(() => {
                     checkCampsite(num, postAddSiteFn)
@@ -51,18 +54,26 @@ const pollCampsites = () => {
                     resolve()
                 }, 0)
             })
-        } else {
+        else
             return false; // return false stops the each iteration
-        }
     })
 }
 
 
 it('loading recreation.gov campsite', () => {
+    cy.log(Cypress.env('bookingOpens'))
+    cy.log(Date.parse(Cypress.env('bookingOpens')))
     populateDates(startDate, endDate);
     visitCampsiteList(campsiteUrl, true);
     establishLoggedIn(email, password);
-    pollCampsites();
+    cy.log(bookingOpens - Date.now())
+
+    cy.wait(-1000000).then(function (
+
+    ) { pollCampsites() })
+
+
+
 })
 
 
