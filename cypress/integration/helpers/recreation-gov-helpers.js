@@ -9,20 +9,20 @@ export const establishLoggedIn = (email, password) => {
     */
     cy.get('[aria-label="Log In"],[aria-label="My Account"]').then(
         ($button) => {
-            cy.log($button.text())
+            cy.log($button.text());
             if ($button.text() === 'Log In') {
-                $button.trigger('click')
-                cy.get('#email').type(email)
-                cy.get('#rec-acct-sign-in-password').type(password)
-                cy.get('.rec-acct-sign-in-btn').click()
+                $button.trigger('click');
+                cy.get('#email').type(email);
+                cy.get('#rec-acct-sign-in-password').type(password);
+                cy.get('.rec-acct-sign-in-btn').click();
             }
         }
-    )
-}
+    );
+};
 
 export const continueShopping = () => {
-    cy.get('button:contains("Continue Shopping")').should('be.visible')
-}
+    cy.get('button:contains("Continue Shopping")').should('be.visible');
+};
 
 export const populateDates = (startDate, endDate) => {
     /*
@@ -32,10 +32,10 @@ export const populateDates = (startDate, endDate) => {
        campsites. At the time this was written going directly
        to the campsite page would not let you set unavailable dates.
     */
-    cy.visit('https://www.recreation.gov/search')
-    cy.get('#startDate').type(startDate)
-    cy.get('#endDate').type('{backspace}')
-    cy.get('#endDate').type(endDate)
+    cy.visit('https://www.recreation.gov/search');
+    cy.get('#startDate').type(startDate);
+    cy.get('#endDate').type('{backspace}');
+    cy.get('#endDate').type(endDate);
     // make sure the page loads before letting other cy commands proceed
-    cy.get('.search-pagination-text:contains("results of")')
-}
+    cy.get('.search-pagination-text:contains("results of")');
+};

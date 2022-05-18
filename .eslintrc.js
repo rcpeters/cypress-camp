@@ -12,4 +12,4 @@ module.exports = {
         'prettier/prettier': 'error',
     },
     plugins: ['prettier'],
-}
+};
